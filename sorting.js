@@ -7,14 +7,14 @@ function nativeSort(arr) {
 
 
 function selectionSort(arr) {
-  for(let i = 0; i < arr.length; i++){
+  for (let i = 0; i < arr.length; i++) {
     let lowest = i;
-    for(let j = i + 1; j < arr.length; j++){
-      if(arr[j] < arr[lowest]){
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[lowest]) {
         lowest = j;
       }
     }
-    if(i !== lowest){
+    if (i !== lowest) {
       [arr[i], arr[lowest]] = [arr[lowest], arr[i]]
     }
   }
@@ -62,7 +62,46 @@ function bubbleSort(arr) {
 
 
 function heapSort(arr) {
+  arr = makeFirstMaxHeap(arr);
+  let size = arr.length;
+  let temp;
+  for (let i = arr.length - 1; i > 0; i--) {
+    temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
+    size--;
+    makeMaxHeap(arr, 0, size);
+  }
+  return arr;
+}
 
+const makeFirstMaxHeap = arr => {
+  for (let i = Math.floor(arr.length / 2); i >= 0; i--) {
+    makeMaxHeap(arr, i, arr.length);
+  }
+  return arr;
+}
+
+const makeMaxHeap = (arr, index, heapSize) => {
+  const left = 2 * index + 1;
+  const right = 2 * index + 2;
+
+  let largestNum = index;
+
+  if (heapSize > left && arr[largestNum] < arr[left]) {
+    largestNum = left;
+  }
+
+  if (heapSize > right && arr[largestNum] < arr[right]) {
+    largestNum = right;
+  }
+
+  if (largestNum !== index) {
+    const temp = arr[index];
+    arr[index] = arr[largestNum];
+    arr[largestNum] = temp;
+    makeMaxHeap(arr, largestNum, heapSize);
+  }
 }
 
 
